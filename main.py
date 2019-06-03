@@ -16,9 +16,10 @@ class CalcApp(ttk.Frame):
         self.Template()
 
     def Template(self):
-        display_label = ttk.Label(
-            self, text = '0'
-        )
+        self.display_var = StringVar()
+        self.display_var.set('0')
+
+        display_label = ttk.Label(self, textvariable = self.display_var)
         display_label.grid(
             column = 0, row = 0, columnspan = 4, sticky = (N, S, E, W)       
         )
@@ -28,6 +29,7 @@ class CalcApp(ttk.Frame):
             for x, char in enumerate(row):
                 button = ttk.Button(self, text = char)
                 button.grid(column = x , row = y, sticky = (N, S, E, W))
+                button.bind('<Button-1>', self.calc)
         self.grid(column = 0, row = 0, sticky = (N, S, E, W))
 
         # 引き伸ばしの設定
@@ -45,6 +47,9 @@ class CalcApp(ttk.Frame):
         self.master.columnconfigure(0, weight = 1)
         self.master.rowconfigure(0, weight = 1)
 
+    def calc(self, event):
+        char = event.widget['text']
+        self.display_var.set(char)
 
 def main():
     root = Tk()
